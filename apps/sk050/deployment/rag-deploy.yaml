@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sk050-k8s-rag
-          image: amdp-registry.skala-ai.com/skala26a-ai2/sk050-rag:1.0.0
+          image: amdp-registry.skala-ai.com/skala26a-ai2/sk050-rag:2-a1f97b8
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
