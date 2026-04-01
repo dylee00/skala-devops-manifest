@@ -21,6 +21,8 @@ spec:
             - containerPort: 8000
               name: http
           envFrom:
+            - secretRef:
+                name: sk050-db-secret
             - configMapRef:
                 name: sk050-k8s-rag-config
           resources:

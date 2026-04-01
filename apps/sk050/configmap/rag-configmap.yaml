@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sk050-k8s-rag-config
+  namespace: sk050-app
+data:
+  QWEN_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
+  EMBED_MODEL: "sentence-transformers/all-MiniLM-L6-v2"
+  FAISS_ROOT: "faiss_db"
+  TOKENIZERS_PARALLELISM: "false"
+  HF_HOME: "/app/.cache/huggingface"
+  TRANSFORMERS_CACHE: "/app/.cache/huggingface"
+  PIP_EXTRA_INDEX_URL: "https://download.pytorch.org/whl/cpu"
+  OMP_NUM_THREADS: "4"
+  MKL_NUM_THREADS: "4"
