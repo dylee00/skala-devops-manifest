@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk050-k8s-frontend
+  namespace: sk050-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sk050-k8s-frontend
+  template:
+    metadata:
+      labels:
+        app: sk050-k8s-frontend
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: sk050-k8s-frontend
+          image: amdp-registry.skala-ai.com/skala26a-ai2/sk050-aiops-vue:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

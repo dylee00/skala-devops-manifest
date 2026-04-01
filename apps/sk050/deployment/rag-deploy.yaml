@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk050-k8s-rag
+  namespace: sk050-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sk050-k8s-rag
+  template:
+    metadata:
+      labels:
+        app: sk050-k8s-rag
+    spec:
+      containers:
+        - name: sk050-k8s-rag
+          image: amdp-registry.skala-ai.com/skala26a-ai2/sk050-rag:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: sk050-k8s-rag-config
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1536Mi"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3

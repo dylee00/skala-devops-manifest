@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sk050-k8s-frontend
+  namespace: sk050-app
+spec:
+  selector:
+    app: sk050-k8s-frontend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+  type: ClusterIP

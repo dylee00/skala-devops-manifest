@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  name: sk050-k8s-ingress
+  namespace: sk050-app
+spec:
+  ingressClassName: public-nginx
+  rules:
+    - host: sk050-ingress.skala25a.project.skala-ai.com
+      http:
+        paths:
+          - path: /api/rag
+            pathType: Prefix
+            backend:
+              service:
+                name: sk050-k8s-rag
+                port:
+                  number: 8000
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: sk050-k8s-api
+                port:
+                  number: 8000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sk050-k8s-frontend
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - sk050-ingress.skala25a.project.skala-ai.com
+      secretName: sk050-ingress-project-tls-cert
